@@ -1,0 +1,56 @@
+{
+    "name": "reg-bm-tiktok",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron .",
+        "electron": "electron .",
+        "dev": "cross-env NODE_ENV=development electron .",
+        "build": "cross-env NODE_ENV=production electron-builder"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.10.0",
+        "cross-env": "^7.0.3",
+        "express": "^5.1.0",
+        "fs": "^0.0.1-security",
+        "https": "^1.0.0",
+        "https-proxy-agent": "^7.0.6",
+        "nodemon": "^3.1.10",
+        "path": "^0.12.7",
+        "puppeteer": "^24.13.0",
+        "puppeteer-extra": "^3.3.6",
+        "puppeteer-extra-plugin-stealth": "^2.11.2",
+        "xlsx": "^0.18.5"
+    },
+    "devDependencies": {
+        "electron": "^37.2.2"
+    },
+    "build": {
+        "appId": "com.crawlgame.app",
+        "productName": "HD CodeLab - HD FutureTech",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "src/**/*",
+            "package.json"
+        ],
+        "win": {
+            "target": "nsis",
+            "icon": "assets/icon.ico"
+        },
+        "mac": {
+            "target": "dmg",
+            "icon": "assets/icon.icns"
+        },
+        "linux": {
+            "target": "AppImage",
+            "icon": "assets/icon.png"
+        }
+    }
+}

@@ -1,0 +1,23 @@
+=== BACKUP ACCOUNT TIKTOK BUSINESS CENTER ===
+Thời gian: 10:44:06 1/8/2025
+Status: Error
+Message: TaskResult failed: {"errorId":1,"errorCode":"ERROR_JOB_STATUS","errorDescription":"Job failed","status":"fail","solution":{}}
+
+=== THÔNG TIN ĐĂNG KÝ ===
+Email: q7sb837vljt200n@hunght1890.com
+Password: dokunna668@
+Phone: N/A
+Company Name: N/A
+Company Website: N/A
+BC Type: N/A
+
+=== THÔNG TIN KỸ THUẬT ===
+Thread ID: N/A
+Proxy: N/A
+User Agent: N/A
+Execution Time: N/A
+
+=== LOG CHI TIẾT ===
+Không có log chi tiết
+
+=== KẾT THÚC BACKUP ===

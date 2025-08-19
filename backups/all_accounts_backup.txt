@@ -1,0 +1,19 @@
+2025-08-01T03:44:06.741Z|Error|q7sb837vljt200n@hunght1890.com|dokunna668@|undefined|undefined|undefined|TaskResult failed: {"errorId":1,"errorCode":"ERROR_JOB_STATUS","errorDescription":"Job failed","status":"fail","solution":{}}
+2025-08-01T03:44:07.252Z|Error|jzy029yxn08f2mr@hunght1890.com|dokunna668@|undefined|undefined|undefined|TaskResult failed: {"errorId":1,"errorCode":"ERROR_JOB_STATUS","errorDescription":"Job failed","status":"fail","solution":{}}
+2025-08-01T03:45:42.661Z|BC Setup Error|757z6a6qruhd57u@hunght1890.com|dokunna668@|undefined|undefined|undefined|Lỗi setup BC: Waiting failed: 30000ms exceeded
+2025-08-01T03:45:50.091Z|BC Setup Error|0fedkxjrtrip0oc@hunght1890.com|dokunna668@|undefined|undefined|undefined|Lỗi setup BC: Waiting failed: 20000ms exceeded
+2025-08-01T03:52:35.631Z|Error|9gkqbncuhiba58p@hunght1890.com|dokunna668@|undefined|undefined|undefined|TaskResult failed: {"errorId":1,"errorCode":"ERROR_JOB_STATUS","errorDescription":"Job failed","status":"fail","solution":{}}
+2025-08-01T03:52:57.000Z|Error|vj0eu6jcarux6mn@hunght1890.com|dokunna668@|undefined|undefined|undefined|TaskResult failed: {"errorId":1,"errorCode":"ERROR_JOB_STATUS","errorDescription":"Job failed","status":"fail","solution":{}}
+2025-08-01T03:57:04.534Z|BC Setup Partial|zbve7beiyvpp5o5@hunght1890.com|dokunna668@|undefined|undefined|undefined|BC Setup hoàn tất nhưng chưa hoàn thành bcHandler/bcAgencyHandler
+2025-08-01T03:57:43.295Z|Error|4938zvjdokuoom4@hunght1890.com|dokunna668@|undefined|undefined|undefined|Waiting for selector `img[draggable="false"]` failed: Waiting failed: 20000ms exceeded
+2025-08-01T04:00:21.992Z|Success|0mu4h8vajyt3kf7@hunght1890.com|dokunna668@|undefined|undefined|Trả trước|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-01T04:00:30.742Z|Success|eb202vcwe55kd4m@hunght1890.com|dokunna668@|undefined|undefined|Trả trước|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-01T04:00:31.215Z|Success|88gfr7b34399cq1@hunght1890.com|dokunna668@|undefined|undefined|Trả trước|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-01T04:00:59.719Z|Success|4ktbsp0ynjafnkv@hunght1890.com|dokunna668@|undefined|undefined|Trả trước|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-01T04:20:12.866Z|Success|YES|19v8nqlar71zvar@hunght1890.com|dokunna668@|undefined|undefined|Trả trước|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-01T04:20:23.561Z|Success|YES|xhy9wmki7ulrx0f@hunght1890.com|dokunna668@|undefined|undefined|Trả trước|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-03T04:48:43.080Z|Success|YES|kqijrzl3bw47jic@hunght1890.com|dokunna668@|undefined|undefined|agency|Trả sau|agency_Trả sau|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-03T04:48:55.842Z|Success|YES|wqkyqp6jbhw8tuk@hunght1890.com|dokunna668@|undefined|undefined|agency|Trả sau|agency_Trả sau|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-03T04:51:39.843Z|Success|YES|3z3x76m1y43d14l@hunght1890.com|dokunna668@|undefined|undefined|agency|Trả sau|agency_Trả sau|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-03T05:16:06.467Z|Success|YES|fftspvbc17js9yl@hunght1890.com|dokunna668@|undefined|undefined|agency|Trả sau|agency_Trả sau|Đăng ký thành công Business Center hoàn chỉnh!
+2025-08-12T13:39:26.165Z|Success|YES|ed4rnw4vdpltztd@hunght1890.com|dokunna668@|undefined|undefined|agency|Trả sau|agency_Trả sau|Đăng ký thành công Business Center hoàn chỉnh!

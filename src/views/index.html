@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HD CodeLab - HD FutureTech</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title">
+                <span>AUTO REG BM-TIKTOK</span>
+            </div>
+            <div class="controls">
+                <button>−</button>
+                <button>□</button>
+                <button>×</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="table-container">
+                    <table id="resultTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;">#</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>Status</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div style="overflow-y: auto;" class="function-group">
+                    <div class="function-title">Chức năng</div>
+                    <div class="button-group">
+                        <button class="button primary">▶ Bắt Đầu</button>
+                        <button class="button">⏸ Dừng</button>
+                    </div>
+                    <div class="button-group">
+                        <button class="button secondary" id="apiKeysBtn">🔑 API Keys</button>
+                        <button class="button secondary" id="testServicesBtn">🧪 Test</button>
+                    </div>
+                    <div class="button-group">
+                        <button class="button" id="backupStatsBtn">📊 Thống kê Backup</button>
+                        <button class="button secondary" id="exportBackupBtn">📤 Export Backup</button>
+                    </div>
+                    <div class="section-title">Cài đặt chung</div>
+                    <div class="form-group">
+                        <label>Số luồng:</label>
+                        <select id="threadCountSelect">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Loại proxy:</label>
+                        <select name="proxy-type">
+                            <option value="prx922">API Pia 922</option>
+                            <option value="static">PROXY TĨNH</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Website Mail:</label>
+                        <select id="mailServiceSelect">
+                            <option value="mail.tm">mail.tm</option>
+                            <option value="inboxes.com">inboxes.com</option>
+                            <option value="hunght189.com">hunght189.com</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>List Proxy:</label>
+                        <textarea>103.35.77.31:8774:cuongnhFT:WCK</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Đường dẫn lưu Excel:</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="text" id="excelPathInput" readonly style="flex:1;" placeholder="Chưa chọn...">
+                            <button type="button" class="button" id="chooseExcelPathBtn">Chọn...</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Loại account:</label>
+                        <select id="accountTypeSelect">
+                            <option value="bc">BC thường</option>
+                            <option value="agency">BC agency</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quốc gia tạo BC:</label>
+                        <select id="countrySelect"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Múi giờ:</label>
+                        <select id="timezoneSelect"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tiền tệ:</label>
+                        <select id="currencySelect"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên công ty:</label>
+                        <input type="text" id="companyNameInput" placeholder="Nhập tên công ty (tùy chọn)">
+                    </div>
+                    <div class="form-group">
+                        <label>Website công ty:</label>
+                        <input type="text" id="companyWebsiteInput" placeholder="Nhập website (tùy chọn)">
+                    </div>
+                    <div class="form-group">
+                        <label>Nơi đăng kí:</label>
+                        <select id="companyCountrySelect"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Keys Modal -->
+    <div id="apiKeysModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Quản lý API Keys</h2>
+                <span class="close" id="closeApiKeysModal">&times;</span>
+            </div>
+
+            <div id="apiKeysContent">
+                <!-- Content will be loaded here -->
+            </div>
+
+            <div style="margin-top: 20px; text-align: right;">
+                <button class="button secondary" id="resetConfigBtn">Reset về mặc định</button>
+                <button class="button primary" id="saveConfigBtn">Lưu cấu hình</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentConfig = {};
+        let regResults = [];
+
+        // --- Dữ liệu quốc gia, múi giờ, tiền tệ ---
+        const countryList = [
+            "Argentina", "Australia", "Austria", "Bahrain", "Belarus", "Belgium", "Bolivia (Plurinational State of)", "Brazil", "Bulgaria", "Cambodia", "Canada", "Chile", "China Outbound", "Colombia", "Costa Rica", "Croatia", "Czechia", "Denmark", "Dominican Republic", "Ecuador", "Egypt", "Estonia", "Finland", "France", "Germany", "Greece", "Guatemala", "Hong Kong", "Hungary", "India", "Indonesia", "Iraq", "Ireland", "Israel", "Italy", "Japan", "Jordan", "Kazakhstan", "Korea", "Kuwait", "Latvia", "Lebanon", "Lithuania", "Malaysia", "Mexico", "Morocco", "Netherlands", "New Zealand", "Norway", "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "San Marino", "Saudi Arabia", "Serbia", "Singapore", "Slovakia", "Slovenia", "South Africa", "Spain", "Sri Lanka", "Sweden", "Switzerland", "Taiwan", "Thailand", "Turkey", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Vietnam"
+        ];
+        const vietCountryList = [
+            "Cộng hòa Dominica", "Panama", "Bahrain", "Kazakhstan", "Belarus", "Sri Lanka", "Guatemala", "Bolivia (Nhà nước đa nguyên)", "Costa Rica", "Argentina", "Ngoài lãnh thổ Trung Quốc", "Hồng Kông", "Colombia", "Chile", "Peru", "Ecuador", "Mexico", "Nam Phi", "Morocco", "Campuchia", "Các Tiểu Vương Quốc Ả Rập Thống Nhất", "Ả Rập Xê út", "Việt Nam", "Thổ Nhĩ Kỳ", "New Zealand", "Thụy Sĩ", "Na Uy", "Romania", "Hungary", "Bỉ", "Hà Lan", "Đan Mạch", "Phần Lan", "Bồ Đào Nha", "Hy Lạp", "Kuwait", "Qatar", "Brazil", "Nhật Bản", "Indonesia", "Malaysia", "Thái Lan", "Ai Cập", "Hàn Quốc", "Nga", "Israel", "Hoa Kỳ", "Pháp", "Ý", "Vương quốc Anh", "Tây Ban Nha", "Singapore", "Canada", "Đức", "Philippines", "Ba Lan", "Czechia", "Ireland", "Áo", "Thụy Điển", "Úc", "Ukraine"
+        ];
+        const timezoneList = [{
+            value: 'UTC-12:00',
+            label: '(UTC-12:00) International Date Line West'
+        }, {
+            value: 'UTC-11:00',
+            label: '(UTC-11:00) Midway Island, Samoa'
+        }, {
+            value: 'UTC-10:00',
+            label: '(UTC-10:00) Hawaii'
+        }, {
+            value: 'UTC-09:00',
+            label: '(UTC-09:00) Alaska'
+        }, {
+            value: 'UTC-08:00',
+            label: '(UTC-08:00) Pacific Time (US & Canada)'
+        }, {
+            value: 'UTC-07:00',
+            label: '(UTC-07:00) Mountain Time (US & Canada)'
+        }, {
+            value: 'UTC-06:00',
+            label: '(UTC-06:00) Central Time (US & Canada), Mexico City'
+        }, {
+            value: 'UTC-05:00',
+            label: '(UTC-05:00) Eastern Time (US & Canada), Bogota, Lima'
+        }, {
+            value: 'UTC-04:00',
+            label: '(UTC-04:00) Atlantic Time (Canada), Caracas, La Paz'
+        }, {
+            value: 'UTC-03:30',
+            label: '(UTC-03:30) Newfoundland'
+        }, {
+            value: 'UTC-03:00',
+            label: '(UTC-03:00) Brazil, Buenos Aires, Georgetown'
+        }, {
+            value: 'UTC-02:00',
+            label: '(UTC-02:00) Mid-Atlantic'
+        }, {
+            value: 'UTC-01:00',
+            label: '(UTC-01:00) Azores, Cape Verde Islands'
+        }, {
+            value: 'UTC+00:00',
+            label: '(UTC+00:00) Western Europe Time, London, Lisbon, Casablanca'
+        }, {
+            value: 'UTC+01:00',
+            label: '(UTC+01:00) Brussels, Copenhagen, Madrid, Paris'
+        }, {
+            value: 'UTC+02:00',
+            label: '(UTC+02:00) Kaliningrad, South Africa'
+        }, {
+            value: 'UTC+03:00',
+            label: '(UTC+03:00) Baghdad, Riyadh, Moscow, St. Petersburg'
+        }, {
+            value: 'UTC+03:30',
+            label: '(UTC+03:30) Tehran'
+        }, {
+            value: 'UTC+04:00',
+            label: '(UTC+04:00) Abu Dhabi, Muscat, Baku, Tbilisi'
+        }, {
+            value: 'UTC+04:30',
+            label: '(UTC+04:30) Kabul'
+        }, {
+            value: 'UTC+05:00',
+            label: '(UTC+05:00) Ekaterinburg, Islamabad, Karachi, Tashkent'
+        }, {
+            value: 'UTC+05:30',
+            label: '(UTC+05:30) Bombay, Calcutta, Madras, New Delhi'
+        }, {
+            value: 'UTC+05:45',
+            label: '(UTC+05:45) Kathmandu'
+        }, {
+            value: 'UTC+06:00',
+            label: '(UTC+06:00) Almaty, Dhaka, Colombo'
+        }, {
+            value: 'UTC+06:30',
+            label: '(UTC+06:30) Yangon, Cocos Islands'
+        }, {
+            value: 'UTC+07:00',
+            label: '(UTC+07:00) Bangkok, Hanoi, Jakarta'
+        }, {
+            value: 'UTC+08:00',
+            label: '(UTC+08:00) Beijing, Perth, Singapore, Hong Kong'
+        }, {
+            value: 'UTC+09:00',
+            label: '(UTC+09:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk'
+        }, {
+            value: 'UTC+09:30',
+            label: '(UTC+09:30) Adelaide, Darwin'
+        }, {
+            value: 'UTC+10:00',
+            label: '(UTC+10:00) Eastern Australia, Guam, Vladivostok'
+        }, {
+            value: 'UTC+11:00',
+            label: '(UTC+11:00) Magadan, Solomon Islands, New Caledonia'
+        }, {
+            value: 'UTC+12:00',
+            label: '(UTC+12:00) Auckland, Wellington, Fiji, Kamchatka'
+        }, {
+            value: 'UTC+13:00',
+            label: '(UTC+13:00) Nuku',
+        }, {
+            value: 'UTC+14:00',
+            label: '(UTC+14:00) Line Islands'
+        }];
+        const currencyList = [{
+            value: 'USD',
+            label: 'USD - US Dollar'
+        }, {
+            value: 'EUR',
+            label: 'EUR - Euro'
+        }, {
+            value: 'VND',
+            label: 'VND - Vietnamese Dong'
+        }, {
+            value: 'JPY',
+            label: 'JPY - Japanese Yen'
+        }, {
+            value: 'CNY',
+            label: 'CNY - Chinese Yuan'
+        }, {
+            value: 'KRW',
+            label: 'KRW - South Korean Won'
+        }, {
+            value: 'GBP',
+            label: 'GBP - British Pound'
+        }, {
+            value: 'AUD',
+            label: 'AUD - Australian Dollar'
+        }, {
+            value: 'CAD',
+            label: 'CAD - Canadian Dollar'
+        }, {
+            value: 'RUB',
+            label: 'RUB - Russian Ruble'
+        }, {
+            value: 'INR',
+            label: 'INR - Indian Rupee'
+        }, {
+            value: 'THB',
+            label: 'THB - Thai Baht'
+        }, {
+            value: 'SGD',
+            label: 'SGD - Singapore Dollar'
+        }, {
+            value: 'MYR',
+            label: 'MYR - Malaysian Ringgit'
+        }, {
+            value: 'IDR',
+            label: 'IDR - Indonesian Rupiah'
+        }, {
+            value: 'BRL',
+            label: 'BRL - Brazilian Real'
+        }, {
+            value: 'TRY',
+            label: 'TRY - Turkish Lira'
+        }, {
+            value: 'PHP',
+            label: 'PHP - Philippine Peso'
+        }, {
+            value: 'PLN',
+            label: 'PLN - Polish Zloty'
+        }, {
+            value: 'CHF',
+            label: 'CHF - Swiss Franc'
+        }, {
+            value: 'SEK',
+            label: 'SEK - Swedish Krona'
+        }, {
+            value: 'NOK',
+            label: 'NOK - Norwegian Krone'
+        }, {
+            value: 'DKK',
+            label: 'DKK - Danish Krone'
+        }, {
+            value: 'CZK',
+            label: 'CZK - Czech Koruna'
+        }, {
+            value: 'HUF',
+            label: 'HUF - Hungarian Forint'
+        }, {
+            value: 'ILS',
+            label: 'ILS - Israeli New Shekel'
+        }, {
+            value: 'SAR',
+            label: 'SAR - Saudi Riyal'
+        }, {
+            value: 'AED',
+            label: 'AED - UAE Dirham'
+        }, {
+            value: 'ZAR',
+            label: 'ZAR - South African Rand'
+        }];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Controls Electron window
+            const btnMin = document.querySelector('.controls button:nth-child(1)');
+            const btnMax = document.querySelector('.controls button:nth-child(2)');
+            const btnClose = document.querySelector('.controls button:nth-child(3)');
+            if (window.electronAPI) {
+                btnMin.addEventListener('click', () => window.electronAPI.minimize());
+                btnMax.addEventListener('click', () => window.electronAPI.maximize());
+                btnClose.addEventListener('click', () => window.electronAPI.close());
+            }
+
+            // Load config on startup
+            loadConfig();
+
+            // API Keys Modal
+            const apiKeysBtn = document.getElementById('apiKeysBtn');
+            const apiKeysModal = document.getElementById('apiKeysModal');
+            const closeApiKeysModal = document.getElementById('closeApiKeysModal');
+            const saveConfigBtn = document.getElementById('saveConfigBtn');
+            const resetConfigBtn = document.getElementById('resetConfigBtn');
+
+            apiKeysBtn.addEventListener('click', () => {
+                loadConfig();
+                apiKeysModal.style.display = 'block';
+            });
+
+            closeApiKeysModal.addEventListener('click', () => {
+                apiKeysModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === apiKeysModal) {
+                    apiKeysModal.style.display = 'none';
+                }
+            });
+
+            saveConfigBtn.addEventListener('click', saveConfig);
+            resetConfigBtn.addEventListener('click', resetConfig);
+
+            // Test Services
+            const testServicesBtn = document.getElementById('testServicesBtn');
+            testServicesBtn.addEventListener('click', testAllServices);
+
+            // Backup Management
+            const backupStatsBtn = document.getElementById('backupStatsBtn');
+            const exportBackupBtn = document.getElementById('exportBackupBtn');
+
+            backupStatsBtn.addEventListener('click', async() => {
+                const originalText = backupStatsBtn.textContent;
+                backupStatsBtn.textContent = '🔄 Đang tải...';
+                backupStatsBtn.disabled = true;
+
+                try {
+                    if (window.electronAPI && window.electronAPI.getBackupStats) {
+                        const result = await window.electronAPI.getBackupStats();
+
+                        if (result.success) {
+                            const stats = result.stats;
+
+                            let accountTypeStats = '';
+                            for (const [type, count] of Object.entries(stats.byAccountType)) {
+                                accountTypeStats += `- ${type}: ${count}\n`;
+                            }
+
+                            let billingTypeStats = '';
+                            for (const [type, count] of Object.entries(stats.byBillingType)) {
+                                billingTypeStats += `- ${type}: ${count}\n`;
+                            }
+
+                            let bcTypeStats = '';
+                            for (const [type, count] of Object.entries(stats.byBcType)) {
+                                bcTypeStats += `- ${type}: ${count}\n`;
+                            }
+
+                            alert(`📊 THỐNG KÊ BACKUP CHI TIẾT\n\n` +
+                                `Tổng số records: ${stats.total}\n` +
+                                `Hoàn thành: ${stats.completed}\n` +
+                                `Thành công (chưa hoàn thành): ${stats.successful - stats.completed}\n` +
+                                `Thất bại: ${stats.failed}\n\n` +
+                                `📋 Theo Account Type (user chọn):\n${accountTypeStats || 'Chưa có dữ liệu'}\n` +
+                                `💳 Theo Billing Type (auto detect):\n${billingTypeStats || 'Chưa có dữ liệu'}\n` +
+                                `🔗 Theo BC Type (combined):\n${bcTypeStats || 'Chưa có dữ liệu'}`);
+                        } else {
+                            alert('❌ Lỗi lấy thống kê: ' + result.error);
+                        }
+                    }
+                } catch (error) {
+                    alert('❌ Lỗi: ' + error.message);
+                } finally {
+                    backupStatsBtn.textContent = originalText;
+                    backupStatsBtn.disabled = false;
+                }
+            });
+
+            exportBackupBtn.addEventListener('click', async() => {
+                if (window.electronAPI && window.electronAPI.chooseExcelPath) {
+                    const excelPath = await window.electronAPI.chooseExcelPath();
+                    if (!excelPath) return;
+
+                    const originalText = exportBackupBtn.textContent;
+                    exportBackupBtn.textContent = '🔄 Đang export...';
+                    exportBackupBtn.disabled = true;
+
+                    try {
+                        if (window.electronAPI.exportBackupToExcel) {
+                            const result = await window.electronAPI.exportBackupToExcel(excelPath);
+
+                            if (result.success) {
+                                alert(`✅ Export thành công!\n\nFile Excel: ${excelPath}`);
+                            } else {
+                                alert('❌ Lỗi export: ' + result.error);
+                            }
+                        }
+                    } catch (error) {
+                        alert('❌ Lỗi: ' + error.message);
+                    } finally {
+                        exportBackupBtn.textContent = originalText;
+                        exportBackupBtn.disabled = false;
+                    }
+                }
+            });
+
+            // Đổ dữ liệu quốc gia
+            const countrySelect = document.getElementById('countrySelect');
+            countryList.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                countrySelect.appendChild(opt);
+            });
+            // Đổ dữ liệu múi giờ
+            const timezoneSelect = document.getElementById('timezoneSelect');
+            timezoneList.forEach(tz => {
+                const opt = document.createElement('option');
+                opt.value = tz.value;
+                opt.textContent = tz.label;
+                timezoneSelect.appendChild(opt);
+            });
+            // Đổ dữ liệu tiền tệ
+            const currencySelect = document.getElementById('currencySelect');
+            currencyList.forEach(cur => {
+                const opt = document.createElement('option');
+                opt.value = cur.value;
+                opt.textContent = cur.label;
+                currencySelect.appendChild(opt);
+            });
+
+            // Đổ dữ liệu quốc gia cho Nơi đăng kí
+            const companyCountrySelect = document.getElementById('companyCountrySelect');
+            vietCountryList.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                companyCountrySelect.appendChild(opt);
+            });
+
+            // Chọn đường dẫn lưu Excel
+            const excelPathInput = document.getElementById('excelPathInput');
+            const chooseExcelPathBtn = document.getElementById('chooseExcelPathBtn');
+            let excelPath = '';
+            chooseExcelPathBtn.addEventListener('click', async() => {
+                if (window.electronAPI && window.electronAPI.chooseExcelPath) {
+                    const path = await window.electronAPI.chooseExcelPath();
+                    if (path) {
+                        excelPath = path;
+                        excelPathInput.value = path;
+                    }
+                }
+            });
+
+            // Bắt sự kiện Bắt Đầu
+            const btnStart = document.querySelector('.button.primary');
+            btnStart.addEventListener('click', async() => {
+                // Lấy toàn bộ config giao diện
+                const proxyTextarea = document.querySelector('textarea');
+                let proxyList = [];
+                if (proxyTextarea) {
+                    proxyList = proxyTextarea.value.split('\n').map(l => l.trim()).filter(Boolean);
+                }
+                const userConfig = {
+                    accountType: document.getElementById('accountTypeSelect').value,
+                    country: document.getElementById('countrySelect').value,
+                    timezone: document.getElementById('timezoneSelect').value,
+                    currency: document.getElementById('currencySelect').value,
+                    mailService: document.getElementById('mailServiceSelect').value,
+                    threadCount: parseInt(document.getElementById('threadCountSelect').value, 10),
+                    excelPath: excelPath,
+                    proxyList: proxyList,
+                    companyName: document.getElementById('companyNameInput').value.trim(),
+                    companyWebsite: document.getElementById('companyWebsiteInput').value.trim(),
+                    companyCountry: document.getElementById('companyCountrySelect').value.trim()
+                };
+                // Reset bảng kết quả
+                regResults = [];
+                renderResultTable();
+                // Gửi về main process
+                if (window.electronAPI && window.electronAPI.startAutomation) {
+                    await window.electronAPI.startAutomation(userConfig);
+                }
+            });
+
+            // Hàm cập nhật bảng kết quả
+            function renderResultTable() {
+                const tbody = document.getElementById('resultTableBody');
+                tbody.innerHTML = '';
+                regResults.forEach((row, idx) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${idx + 1}</td>
+                        <td>${row.email || ''}</td>
+                        <td>${row.password || ''}</td>
+                        <td>${row.status || ''}</td>
+                        <td>${row.message || ''}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // IPC nhận kết quả reg từ main process
+            if (window.electronAPI) {
+                window.electronAPI.onRegResult && window.electronAPI.onRegResult((event, result) => {
+                    regResults.push(result);
+                    renderResultTable();
+                });
+            }
+            const proxyTypeSelect = document.querySelector('select[name="proxy-type"]');
+            const listProxyGroup = Array.from(document.querySelectorAll('.form-group')).find(group => {
+                const label = group.querySelector('label');
+                return label && label.textContent.includes('List Proxy');
+            });
+
+            function updateListProxyVisibility() {
+                if (!proxyTypeSelect || !listProxyGroup) return;
+                if (proxyTypeSelect.value === 'prx922') {
+                    listProxyGroup.style.display = 'none';
+                } else {
+                    listProxyGroup.style.display = '';
+                }
+            }
+            if (proxyTypeSelect && listProxyGroup) {
+                proxyTypeSelect.addEventListener('change', updateListProxyVisibility);
+                updateListProxyVisibility();
+            }
+
+            const btnStop = document.querySelector('.button:not(.primary)');
+            btnStop.addEventListener('click', async() => {
+                if (window.electronAPI && window.electronAPI.stopAutomation) {
+                    await window.electronAPI.stopAutomation();
+                }
+            });
+        });
+
+        async function loadConfig() {
+            try {
+                const result = await window.electronAPI.getConfig();
+                if (result.success) {
+                    currentConfig = result.config;
+                    renderConfigUI();
+                } else {
+                    console.error('Failed to load config:', result.error);
+                }
+            } catch (error) {
+                console.error('Error loading config:', error);
+            }
+        }
+
+        function renderConfigUI() {
+            const content = document.getElementById('apiKeysContent');
+            content.innerHTML = '';
+
+            const services = [{
+                key: 'mailTm',
+                name: 'Mail.tm',
+                description: 'Email service không cần API key'
+            }, {
+                key: 'inboxes',
+                name: 'Inboxes.com',
+                description: 'RapidAPI Inboxes service'
+            }, {
+                key: 'codesim',
+                name: 'Codesim',
+                description: 'Codesim API service'
+            }, {
+                key: 'omoCaptcha',
+                name: 'OmoCaptcha',
+                description: 'OmoCaptcha API service'
+            }];
+
+            services.forEach(service => {
+                const serviceConfig = currentConfig[service.key] || {};
+                const serviceDiv = document.createElement('div');
+                serviceDiv.className = 'service-config';
+
+                serviceDiv.innerHTML = `
+                    <div class="service-header">
+                        <div>
+                            <span class="service-name">${service.name}</span>
+                            <span class="status-indicator ${serviceConfig.enabled ? 'status-active' : 'status-inactive'}"></span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" ${serviceConfig.enabled ? 'checked' : ''} 
+                                   onchange="toggleService('${service.key}', this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>API Key:</label>
+                        <input type="text" class="api-key-input" 
+                               value="${serviceConfig.apiKey || ''}" 
+                               placeholder="Nhập API key..."
+                               onchange="updateApiKey('${service.key}', this.value)">
+                        <button class="test-button" onclick="testService('${service.key}')" 
+                                ${!serviceConfig.enabled ? 'disabled' : ''}>
+                            Test
+                        </button>
+                    </div>
+                    <div style="font-size: 11px; color: #6c757d; margin-top: 8px;">
+                        ${service.description}
+                    </div>
+                `;
+
+                content.appendChild(serviceDiv);
+            });
+        }
+
+        async function toggleService(serviceName, enabled) {
+            try {
+                const result = await window.electronAPI.setServiceEnabled(serviceName, enabled);
+                if (result.success) {
+                    currentConfig[serviceName] = currentConfig[serviceName] || {};
+                    currentConfig[serviceName].enabled = enabled;
+                    renderConfigUI();
+                } else {
+                    console.error('Failed to toggle service:', result.error);
+                }
+            } catch (error) {
+                console.error('Error toggling service:', error);
+            }
+        }
+
+        async function updateApiKey(serviceName, apiKey) {
+            try {
+                const result = await window.electronAPI.updateApiKey(serviceName, apiKey);
+                if (result.success) {
+                    currentConfig[serviceName] = currentConfig[serviceName] || {};
+                    currentConfig[serviceName].apiKey = apiKey;
+                } else {
+                    console.error('Failed to update API key:', result.error);
+                }
+            } catch (error) {
+                console.error('Error updating API key:', error);
+            }
+        }
+
+        async function saveConfig() {
+            // Config is already saved when individual fields are updated
+            alert('Cấu hình đã được lưu!');
+        }
+
+        async function resetConfig() {
+            if (confirm('Bạn có chắc muốn reset về cấu hình mặc định?')) {
+                try {
+                    const result = await window.electronAPI.resetConfig();
+                    if (result.success) {
+                        await loadConfig();
+                        alert('Đã reset về cấu hình mặc định!');
+                    } else {
+                        console.error('Failed to reset config:', result.error);
+                    }
+                } catch (error) {
+                    console.error('Error resetting config:', error);
+                }
+            }
+        }
+        async function testService(serviceName) {
+            const testBtn = event.target;
+            const originalText = testBtn.textContent;
+            testBtn.textContent = 'Testing...';
+            testBtn.disabled = true;
+
+            try {
+                const result = await window.electronAPI.testService(serviceName);
+                if (result.success) {
+                    alert(`${serviceName} hoạt động bình thường!`);
+                } else {
+                    alert(`Lỗi: ${result.error}`);
+                }
+            } catch (error) {
+                alert(`Lỗi khi test: ${error.message}`);
+            } finally {
+                testBtn.textContent = originalText;
+                testBtn.disabled = false;
+            }
+        }
+        async function testAllServices() {
+            const services = ['mailTm', 'inboxes', 'hunght189', 'tmailor'];
+            let results = [];
+            for (const service of services) {
+                try {
+                    const result = await window.electronAPI.testService(service);
+                    results.push(`${service}: ${result.success ? '✅ OK' : '❌ Lỗi'}`);
+                } catch (error) {
+                    results.push(`${service}: ❌ Lỗi`);
+                }
+            }
+            alert('Kết quả test:\n' + results.join('\n'));
+        }
+    </script>
+</body>
+
+</html>

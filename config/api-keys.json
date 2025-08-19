@@ -1,0 +1,27 @@
+{
+    "mailTm": {
+        "enabled": true,
+        "apiKey": "",
+        "baseUrl": "https://api.mail.tm"
+    },
+    "inboxes": {
+        "enabled": true,
+        "apiKey": "b7826d4496msh74147643d4d0fd2p160263jsn0a19523eae86",
+        "hostname": "inboxes-com.p.rapidapi.com"
+    },
+    "tmailor": {
+        "enabled": true,
+        "apiKey": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlIjoicHprS1pKNVhFVU1QcTFWMEphcTBaSXlESTNJaklVeXlHSGc0cXhXMkkzeW5ISEVkRHlTam54a2dHM0lBcTAxNkdJRVZaSFNVcFFPbm9JcTNESVNDckhrM0h3SVpxMUE0RHhNS0tCS0FJSndJUEhLeWcifQ.jGXv2ZyQI_zVfI2dem3P2qDXcQvhw3YVaHU7Kt36sLU",
+        "baseUrl": "https://api.tmailor.com/api/v1"
+    },
+    "codesim": {
+        "enabled": true,
+        "apiKey": "d306d67ac4224b72aa9bd268de771eb7",
+        "baseUrl": "https://apisim.codesim.net"
+    },
+    "omoCaptcha": {
+        "enabled": true,
+        "apiKey": "OMO_TYN7B4ZD93N9VWESZHPMGUOXPXTWJV6OLSRMBWM4IN9GVAAFG8GV3UDKKDKTFN1754301829",
+        "baseUrl": "https://api.omocaptcha.com"
+    }
+}
